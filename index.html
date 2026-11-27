@@ -14,7 +14,7 @@
             <header class="brand-header">
                 <div class="header-bg-pattern"></div>
                 <div class="logo-ring">
-                    <img src="Logo.png" alt="Mobile Mart" class="shop-logo" onerror="this.style.display='none'; document.getElementById('fallbackIcon').style.display='flex';">
+                    <img id="shopLogoImg" src="Logo.jpg" alt="Mobile Mart" class="shop-logo">
                     <div id="fallbackIcon" class="fallback-logo" style="display: none;">MM</div>
                 </div>
                 <div class="brand-title-wrap">
@@ -138,27 +138,5 @@
     </div>
 
     <script src="app.js"></script>
-    <script>
-        // ক্যারেক্টার কাউন্টার ও বাটন রোটেশন অ্যানিমেশন
-        const txtArea = document.getElementById("reviewText");
-        const cCount = document.getElementById("charCount");
-        const rBtn = document.getElementById("regenerateBtn");
-
-        function updateCounter() {
-            if (txtArea && cCount) {
-                cCount.textContent = txtArea.value.length + " chars";
-            }
-        }
-        txtArea.addEventListener("input", updateCounter);
-        rBtn.addEventListener("click", () => {
-            rBtn.classList.add("spinning");
-            setTimeout(() => rBtn.classList.remove("spinning"), 350);
-            setTimeout(updateCounter, 20);
-        });
-        document.querySelectorAll(".tag-btn, .length-btn").forEach(b => {
-            b.addEventListener("click", () => setTimeout(updateCounter, 20));
-        });
-        window.addEventListener("DOMContentLoaded", () => setTimeout(updateCounter, 50));
-    </script>
 </body>
 </html>
