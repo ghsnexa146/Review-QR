@@ -69,26 +69,28 @@ body {
     pointer-events: none;
 }
 
+/* আপডেটেড লোগো ফ্রেম ও ফিট স্টাইল */
 .logo-ring {
-    width: 72px;
-    height: 72px;
+    width: 82px;
+    height: 82px;
     background: #FFFFFF;
     border-radius: 50%;
     margin: 0 auto 12px;
-    padding: 5px;
+    padding: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.22);
     position: relative;
     z-index: 1;
+    overflow: hidden;
 }
 
 .shop-logo {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 50%;
+    border-radius: 0;
 }
 
 .fallback-logo {
