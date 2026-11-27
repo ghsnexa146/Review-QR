@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Mart — Rate Your Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-wrapper">
+        <main class="review-card">
+            <!-- প্রিমিয়াম টপ ব্যানার ও ব্র্যান্ডিং -->
+            <header class="brand-header">
+                <div class="header-bg-pattern"></div>
+                <div class="logo-ring">
+                    <img src="Logo.png" alt="Mobile Mart" class="shop-logo" onerror="this.style.display='none'; document.getElementById('fallbackIcon').style.display='flex';">
+                    <div id="fallbackIcon" class="fallback-logo" style="display: none;">MM</div>
+                </div>
+                <div class="brand-title-wrap">
+                    <h1>Mobile Mart</h1>
+                    <span class="verified-badge" title="Verified Business">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                </div>
+                <p class="shop-address">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Office Road, Sonamura, Tripura
+                </p>
+
+                <div class="rating-pill">
+                    <div class="stars" aria-label="5 out of 5 stars">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <span>5.0 Excellent Service</span>
+                </div>
+            </header>
+
+            <div class="card-body">
+                <!-- ধাপ ১: সার্ভিস ক্যাটাগরি -->
+                <section class="form-group">
+                    <div class="label-row">
+                        <span class="step-badge">1</span>
+                        <label class="group-label">Select Service Taken</label>
+                    </div>
+                    <div class="tags-grid" id="tagContainer">
+                        <button type="button" class="tag-btn active" data-category="all">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                            All Services
+                        </button>
+                        <button type="button" class="tag-btn" data-category="repair">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            Mobile Repair
+                        </button>
+                        <button type="button" class="tag-btn" data-category="unlock">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                            Unlock / Software
+                        </button>
+                        <button type="button" class="tag-btn" data-category="cctv">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                            CCTV Setup
+                        </button>
+                        <button type="button" class="tag-btn" data-category="pc">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            PC Build & Repair
+                        </button>
+                        <button type="button" class="tag-btn" data-category="parts">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                            Spare Parts
+                        </button>
+                    </div>
+                </section>
+
+                <!-- ধাপ ২: রিভিউ দৈর্ঘ্য -->
+                <section class="form-group">
+                    <div class="label-row">
+                        <span class="step-badge">2</span>
+                        <label class="group-label">Review Length</label>
+                    </div>
+                    <div class="length-segmented">
+                        <button type="button" class="length-btn" data-length="short">Short</button>
+                        <button type="button" class="length-btn active" data-length="balanced">Balanced</button>
+                        <button type="button" class="length-btn" data-length="detailed">Detailed</button>
+                    </div>
+                </section>
+
+                <!-- ধাপ ৩: জেনারেটেড রিভিউ বক্স -->
+                <section class="form-group">
+                    <div class="review-top-bar">
+                        <div class="label-row">
+                            <span class="step-badge">3</span>
+                            <label class="group-label">Your Review (Editable)</label>
+                        </div>
+                        <button type="button" id="regenerateBtn" class="regen-btn">
+                            <svg class="spin-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                            New Review
+                        </button>
+                    </div>
+                    <div class="textarea-wrap">
+                        <textarea id="reviewText" rows="5" placeholder="Generating positive feedback..."></textarea>
+                        <div class="textarea-footer">
+                            <span class="hint-text">Tap text above to customize</span>
+                            <span id="charCount" class="char-count">0 chars</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- অ্যাকশন বাটন -->
+                <button type="button" id="postGoogleBtn" class="google-submit-btn">
+                    <span class="g-icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24z"/>
+                            <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96z"/>
+                        </svg>
+                    </span>
+                    <span>Copy & Post on Google</span>
+                </button>
+
+                <p class="helper-note">Review copies automatically. Just <strong>Paste</strong> & tap <strong>Post</strong> on Google!</p>
+
+                <div id="toast" class="toast-banner">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>Copied! Opening Google Review...</span>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p class="thanks-text">Thank you for visiting <strong>Mobile Mart</strong></p>
+            <p class="dev-credit">ডিজাইন বাই ডি হোসেন &bull; <a href="https://ghum-heen-shopno.online/" target="_blank" rel="noopener">D Hossain</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // ক্যারেক্টার কাউন্টার ও বাটন রোটেশন অ্যানিমেশন
+        const txtArea = document.getElementById("reviewText");
+        const cCount = document.getElementById("charCount");
+        const rBtn = document.getElementById("regenerateBtn");
+
+        function updateCounter() {
+            if (txtArea && cCount) {
+                cCount.textContent = txtArea.value.length + " chars";
+            }
+        }
+        txtArea.addEventListener("input", updateCounter);
+        rBtn.addEventListener("click", () => {
+            rBtn.classList.add("spinning");
+            setTimeout(() => rBtn.classList.remove("spinning"), 350);
+            setTimeout(updateCounter, 20);
+        });
+        document.querySelectorAll(".tag-btn, .length-btn").forEach(b => {
+            b.addEventListener("click", () => setTimeout(updateCounter, 20));
+        });
+        window.addEventListener("DOMContentLoaded", () => setTimeout(updateCounter, 50));
+    </script>
+</body>
+</html>
