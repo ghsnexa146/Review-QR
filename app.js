@@ -1,4 +1,4 @@
-// আপনার Google Business Profile Place ID (Mobile Mart, Office Road, Sonamura)
+// আপনার Google Business Profile Place ID
 const GOOGLE_PLACE_ID = "ChIJTe97yMuHUzcRiXtJfKcgFhA";
 const GOOGLE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
 
@@ -192,6 +192,7 @@ function buildSingleReview(category, length) {
     const closing = pickRandom(data.closings);
 
     if (length === "short") {
+        // শর্ট রিভিউয়ের বিভিন্ন ফরম্যাট
         const shortTemplates = [
             `${opening} ${closing}`,
             `${detail} ${closing}`,
@@ -199,6 +200,7 @@ function buildSingleReview(category, length) {
         ];
         return pickRandom(shortTemplates);
     } else if (length === "balanced") {
+        // ব্যালেন্সড রিভিউয়ের বিভিন্ন ফরম্যাট
         const balancedTemplates = [
             `${opening} ${detail} ${closing}`,
             `${opening} ${praise} ${closing}`,
@@ -206,6 +208,7 @@ function buildSingleReview(category, length) {
         ];
         return pickRandom(balancedTemplates);
     } else {
+        // ডিটেইলড রিভিউ
         return `${opening} ${detail} ${praise} ${closing}`;
     }
 }
@@ -216,12 +219,14 @@ function generateReview() {
     let candidate = "";
     let attempts = 0;
 
+    // সর্বোচ্চ ৩০ বার চেষ্টা করে একেবারে নতুন ইউনিক রিভিউ বাছাই করবে
     do {
         const chosenCat = currentCategory === "all" ? pickRandom(categories) : currentCategory;
         candidate = buildSingleReview(chosenCat, currentLength);
         attempts++;
     } while ((candidate === lastGeneratedText || generatedHistory.has(candidate)) && attempts < 30);
 
+    // যদি সেশনে ৫০০টির বেশি রিভিউ দেখা হয়ে যায়, হিস্ট্রি রিসেট করবে
     if (generatedHistory.size > 500) {
         generatedHistory.clear();
     }
@@ -254,41 +259,27 @@ lengthButtons.forEach(btn => {
 // রিভিউ পরিবর্তন বাটন
 regenerateBtn.addEventListener("click", generateReview);
 
-// কপি এবং গুগল রিভিউ পেজে রিডাইরেক্ট (১০০% নিশ্চিত কপি মেথড)
+// কপি এবং গুগল রিভিউ পেজে রিডাইরেক্ট
 postGoogleBtn.addEventListener("click", async () => {
     const textToCopy = reviewTextArea.value.trim();
-    if (!textToCopy) return;
 
-    let copied = false;
-
-    // পদ্ধতি ১: আধুনিক ক্লিপবোর্ড API
     try {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(textToCopy);
-            copied = true;
+        } else {
+            reviewTextArea.select();
+            document.execCommand("copy");
         }
     } catch (err) {
-        copied = false;
-    }
-
-    // পদ্ধতি ২: ফলব্যাক মেথড (TrebEdit বা পুরনো ব্রাউজারের জন্য)
-    if (!copied) {
-        reviewTextArea.focus();
         reviewTextArea.select();
-        reviewTextArea.setSelectionRange(0, 99999);
-        try {
-            copied = document.execCommand("copy");
-        } catch (e) {
-            copied = false;
-        }
+        document.execCommand("copy");
     }
 
-    // টোস্ট মেসেজ দেখানো এবং ১.২ সেকেন্ড পর গুগল পেজ ওপেন করা
     toast.style.display = "block";
 
     setTimeout(() => {
         window.location.href = GOOGLE_REVIEW_URL;
-    }, 1200);
+    }, 900);
 });
 
 // পেজ লোড হওয়ার সাথে সাথে প্রথম রিভিউ দেখানো
