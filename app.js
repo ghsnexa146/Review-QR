@@ -1,8 +1,28 @@
-// আপনার Google Business Profile Place ID
+// আপনার Google Business Profile Place ID (Mobile Mart, Office Road, Sonamura)
 const GOOGLE_PLACE_ID = "ChIJTe97yMuHUzcRiXtJfKcgFhA";
 const GOOGLE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${GOOGLE_PLACE_ID}`;
 
-// ডাইনামিক রিভিউ বিল্ডার ডেটাবেস (এটি ৫,০০০+ ইউনিক কম্বিনেশন তৈরি করতে সক্ষম)
+// স্মার্ট লোগো লোডার (যেকোনো কেস বা এক্সটেনশন স্বয়ংক্রিয়ভাবে খুঁজে নেবে)
+(function initLogoLoader() {
+    const logoImg = document.getElementById("shopLogoImg");
+    const fallbackIcon = document.getElementById("fallbackIcon");
+    if (!logoImg) return;
+
+    const possibleNames = ["Logo.jpg", "logo.jpg", "Logo.JPG", "logo.JPG", "Logo.jpeg", "logo.jpeg", "Logo.png", "logo.png"];
+    let idx = 0;
+
+    logoImg.onerror = function() {
+        idx++;
+        if (idx < possibleNames.length) {
+            logoImg.src = possibleNames[idx];
+        } else {
+            logoImg.style.display = "none";
+            if (fallbackIcon) fallbackIcon.style.display = "flex";
+        }
+    };
+})();
+
+// ডাইনামিক রিভিউ বিল্ডার ডেটাবেস (৫,০০০+ ইউনিক কম্বিনেশন)
 const reviewParts = {
     repair: {
         openings: [
@@ -173,6 +193,7 @@ let lastGeneratedText = "";
 const generatedHistory = new Set();
 
 const reviewTextArea = document.getElementById("reviewText");
+const charCountEl = document.getElementById("charCount");
 const tagButtons = document.querySelectorAll(".tag-btn");
 const lengthButtons = document.querySelectorAll(".length-btn");
 const regenerateBtn = document.getElementById("regenerateBtn");
@@ -183,7 +204,12 @@ function pickRandom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// একটি নির্দিষ্ট ক্যাটাগরি থেকে ডাইনামিক রিভিউ তৈরি করা
+function updateCharCounter() {
+    if (reviewTextArea && charCountEl) {
+        charCountEl.textContent = reviewTextArea.value.length + " chars";
+    }
+}
+
 function buildSingleReview(category, length) {
     const data = reviewParts[category];
     const opening = pickRandom(data.openings);
@@ -192,7 +218,6 @@ function buildSingleReview(category, length) {
     const closing = pickRandom(data.closings);
 
     if (length === "short") {
-        // শর্ট রিভিউয়ের বিভিন্ন ফরম্যাট
         const shortTemplates = [
             `${opening} ${closing}`,
             `${detail} ${closing}`,
@@ -200,7 +225,6 @@ function buildSingleReview(category, length) {
         ];
         return pickRandom(shortTemplates);
     } else if (length === "balanced") {
-        // ব্যালেন্সড রিভিউয়ের বিভিন্ন ফরম্যাট
         const balancedTemplates = [
             `${opening} ${detail} ${closing}`,
             `${opening} ${praise} ${closing}`,
@@ -208,25 +232,21 @@ function buildSingleReview(category, length) {
         ];
         return pickRandom(balancedTemplates);
     } else {
-        // ডিটেইলড রিভিউ
         return `${opening} ${detail} ${praise} ${closing}`;
     }
 }
 
-// র‍্যান্ডম ইউনিক রিভিউ জেনারেট করার মূল ফাংশন
 function generateReview() {
     const categories = Object.keys(reviewParts);
     let candidate = "";
     let attempts = 0;
 
-    // সর্বোচ্চ ৩০ বার চেষ্টা করে একেবারে নতুন ইউনিক রিভিউ বাছাই করবে
     do {
         const chosenCat = currentCategory === "all" ? pickRandom(categories) : currentCategory;
         candidate = buildSingleReview(chosenCat, currentLength);
         attempts++;
     } while ((candidate === lastGeneratedText || generatedHistory.has(candidate)) && attempts < 30);
 
-    // যদি সেশনে ৫০০টির বেশি রিভিউ দেখা হয়ে যায়, হিস্ট্রি রিসেট করবে
     if (generatedHistory.size > 500) {
         generatedHistory.clear();
     }
@@ -234,9 +254,9 @@ function generateReview() {
     generatedHistory.add(candidate);
     lastGeneratedText = candidate;
     reviewTextArea.value = candidate;
+    updateCharCounter();
 }
 
-// ক্যাটাগরি বাটন ক্লিক ইভেন্ট
 tagButtons.forEach(btn => {
     btn.addEventListener("click", () => {
         tagButtons.forEach(b => b.classList.remove("active"));
@@ -246,7 +266,6 @@ tagButtons.forEach(btn => {
     });
 });
 
-// দৈর্ঘ্য (Short/Balanced/Detailed) বাটন ক্লিক ইভেন্ট
 lengthButtons.forEach(btn => {
     btn.addEventListener("click", () => {
         lengthButtons.forEach(b => b.classList.remove("active"));
@@ -256,31 +275,45 @@ lengthButtons.forEach(btn => {
     });
 });
 
-// রিভিউ পরিবর্তন বাটন
-regenerateBtn.addEventListener("click", generateReview);
+regenerateBtn.addEventListener("click", () => {
+    regenerateBtn.classList.add("spinning");
+    setTimeout(() => regenerateBtn.classList.remove("spinning"), 350);
+    generateReview();
+});
 
-// কপি এবং গুগল রিভিউ পেজে রিডাইরেক্ট
+reviewTextArea.addEventListener("input", updateCharCounter);
+
 postGoogleBtn.addEventListener("click", async () => {
     const textToCopy = reviewTextArea.value.trim();
+    if (!textToCopy) return;
+
+    let copied = false;
 
     try {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(textToCopy);
-        } else {
-            reviewTextArea.select();
-            document.execCommand("copy");
+            copied = true;
         }
     } catch (err) {
+        copied = false;
+    }
+
+    if (!copied) {
+        reviewTextArea.focus();
         reviewTextArea.select();
-        document.execCommand("copy");
+        reviewTextArea.setSelectionRange(0, 99999);
+        try {
+            copied = document.execCommand("copy");
+        } catch (e) {
+            copied = false;
+        }
     }
 
     toast.style.display = "block";
 
     setTimeout(() => {
         window.location.href = GOOGLE_REVIEW_URL;
-    }, 900);
+    }, 1200);
 });
 
-// পেজ লোড হওয়ার সাথে সাথে প্রথম রিভিউ দেখানো
 window.addEventListener("DOMContentLoaded", generateReview);
